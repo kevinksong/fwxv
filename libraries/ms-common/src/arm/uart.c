@@ -48,7 +48,7 @@ static void prv_handle_irq(UartPort uart);
 
 StatusCode uart_init(UartPort uart, UartSettings *settings) {
   // Reserve USART Port 1 for Retarget.c
-  if (uart == UART_PORT_1 || settings == NULL) return STATUS_CODE_INVALID_ARGS;
+  // if (uart == UART_PORT_1 || settings == NULL) return STATUS_CODE_INVALID_ARGS;
   if (s_port[uart].initialized) return STATUS_CODE_RESOURCE_EXHAUSTED;
 
   s_port[uart].rcc_cmd(s_port[uart].periph, ENABLE);
@@ -96,6 +96,7 @@ StatusCode uart_init(UartPort uart, UartSettings *settings) {
 
 StatusCode uart_tx(UartPort uart, uint8_t *data, size_t *len) {
   if (data == NULL || len == NULL) return STATUS_CODE_INVALID_ARGS;
+  if (!s_port[uart].initialized) return STATUS_CODE_UNINITIALIZED;
   StatusCode status = STATUS_CODE_OK;
   // Send all data to queue;
   for (uint8_t i = 0; i < *len; i++) {
@@ -123,6 +124,7 @@ StatusCode uart_tx(UartPort uart, uint8_t *data, size_t *len) {
 
 StatusCode uart_rx(UartPort uart, uint8_t *data, size_t *len) {
   if (data == NULL || len == NULL) return STATUS_CODE_INVALID_ARGS;
+  if (!s_port[uart].initialized) return STATUS_CODE_UNINITIALIZED;
   StatusCode status;
   for (uint8_t i = 0; i < *len; i++) {
     status = queue_receive(&s_port_queues[uart].rx_queue, &data[i], 0);

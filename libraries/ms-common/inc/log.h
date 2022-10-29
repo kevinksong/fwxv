@@ -35,24 +35,27 @@ typedef enum {
 extern char g_log_buffer[MAX_LOG_SIZE];
 extern Mutex s_log_mutex;
 
+extern UartSettings log_settings;
+
 #define LOG_DEBUG(fmt, ...) LOG(LOG_LEVEL_DEBUG, fmt, ##__VA_ARGS__)
 #define LOG_WARN(fmt, ...) LOG(LOG_LEVEL_WARN, fmt, ##__VA_ARGS__)
 #define LOG_CRITICAL(fmt, ...) LOG(LOG_LEVEL_CRITICAL, fmt, ##__VA_ARGS__)
 
-#define log_init() mutex_init(&s_log_mutex)
+void log_init(void);
 
 #ifdef MS_PLATFORM_X86
-#define LOG(level, fmt, ...) printf("[%u] %s:%u: " fmt, (level), __FILE__, __LINE__, ##__VA_ARGS__)
+#define LOG(level, fmt, ...) printf("X86 VERSION [%u] %s:%u: " fmt, (level), __FILE__, __LINE__, ##__VA_ARGS__)
 #else
 #define LOG(level, fmt, ...)                                                                      \
   do {                                                                                            \
     if (mutex_lock(&s_log_mutex, LOG_TIMEOUT_MS) == STATUS_CODE_OK) {                             \
-      size_t msg_size = (size_t)snprintf(g_log_buffer, MAX_LOG_SIZE, "[%u] %s:%u: " fmt, (level), \
+      size_t msg_size = (size_t)snprintf(g_log_buffer, MAX_LOG_SIZE, "\rARM: [%u] %s:%u: " fmt, (level), \
                                          __FILE__, __LINE__, ##__VA_ARGS__);                      \
       if (xTaskGetSchedulerState() != taskSCHEDULER_RUNNING) {                                    \
         printf("%s", g_log_buffer);                                                               \
       } else {                                                                                    \
-        uart_tx(UARTPORT, (uint8_t *)g_log_buffer, &msg_size);                                    \
+        /*printf("\rARM VERSION: %.*s", (uint8_t)msg_size, g_log_buffer);*/ \
+        uart_tx(UARTPORT, (uint8_t *)g_log_buffer, &msg_size);                                 \
       }                                                                                           \
       mutex_unlock(&s_log_mutex);                                                                 \
     }                                                                                             \
