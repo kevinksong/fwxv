@@ -1,7 +1,6 @@
 #pragma once
 
 #include "adc.h"
-#include "can_codegen.h"
 #include "fsm.h"
 #include "gpio.h"
 #include "log.h"
