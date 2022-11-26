@@ -81,6 +81,13 @@ for entry in PROJ_DIRS + LIB_DIRS + SMOKE_DIRS:
 
         objs = OBJ_DIR.Dir(str(entry.path)).Dir('src').glob('*.o')
         objs += OBJ_DIR.Dir(str(entry.path)).Dir('src').Dir(PLATFORM).glob('*.o')
+
+        # TODO: since can.o is here but should really be under the project build folder
+        if config["can"]:
+            objs += OBJ_DIR.Dir("can").Dir('src').glob('*.o')
+            objs += OBJ_DIR.Dir("can").Dir('src').Dir(PLATFORM).glob('*.o')
+            objs += OBJ_DIR.Dir(str(entry.path)).Dir('src').Dir("can_codegen").glob('*.o')
+
         entry_objects = []
         for obj in objs:
             if 'main.o' not in obj.name:
