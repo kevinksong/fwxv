@@ -2,6 +2,7 @@
 
 #include "log.h"
 #include "tasks.h"
+#include "power_select_power_supply_task.h"
 
 #ifdef MS_PLATFORM_X86
 #define MASTER_MS_CYCLE_TIME 100

@@ -33,4 +33,7 @@ typedef enum PowerSupplyStateId {
   POWER_SUPPLY_ACTIVE,
 } PowerSupplyStateId;
 
+DECLARE_TASK(master_task);
+
 StatusCode init_power_supply(void);
+void test_main();
