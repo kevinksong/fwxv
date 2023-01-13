@@ -1,6 +1,9 @@
 #include "power_select_power_supply_task.h"
 #include "power_select_setters.h"
-#include "getter_template.c"
+//#include "getter_template.c"
+
+
+
 
 #define PWR_SUP_STATUS g_tx_struct.power_select_status_status
 #define PWR_SUP_FAULT g_tx_struct.power_select_status_fault
@@ -86,3 +89,13 @@ StatusCode init_power_supply(void) {
   fsm_init(power_supply, settings, NULL);
   return STATUS_CODE_OK;
 }
+
+
+#ifdef MS_TEST
+
+uint16_t get_adc_reading_voltage() 
+{
+    return adc_reading_voltage;
+}
+
+#endif
