@@ -1,6 +1,6 @@
 #include "power_select_power_supply_task.h"
-
 #include "power_select_setters.h"
+#include "getter_template.c"
 
 #define PWR_SUP_STATUS g_tx_struct.power_select_status_status
 #define PWR_SUP_FAULT g_tx_struct.power_select_status_fault

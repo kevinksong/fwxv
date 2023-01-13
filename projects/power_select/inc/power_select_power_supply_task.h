@@ -5,6 +5,8 @@
 #include "gpio.h"
 #include "log.h"
 
+uint16_t get_adc_reading_voltage();
+
 #define NUM_POWER_SUPPLY_STATES 2
 #define NUM_POWER_SUPPLY_TRANSITIONS 2
 

@@ -95,7 +95,7 @@ if __name__ == "__main__":
     for template_iterable in ARGPARSER.template:
         template_dir = template_iterable.split('/')[:-1]
         template_name = template_iterable.split('/')[-1]
-        templateLoader = jinja2.FileSystemLoader(searchpath=template_dir)
+        templateLoader = jinja2.FileSystemLoader(searchpath='./')
         env = jinja2.Environment(loader=templateLoader)
         env.filters["format_function_length"] = format_function_length
         file_path = ARGPARSER.file_path + "/" + template_name[:-6] + ".c"
