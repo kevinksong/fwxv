@@ -7,7 +7,8 @@
 #include "spi_mcu.h"
 #include "status.h"
 
-#define SPI_MUTEX_WAIT_MS 100
+#define SPI_TIMEOUT_MS 100
+#define SPI_MAX_NUM_DATA 32
 
 typedef enum {
   SPI_MODE_0 = 0,  // CPOL: 0 CPHA: 0
@@ -55,3 +56,11 @@ StatusCode spi_cs_get_state(SpiPort spi, GpioState *input_state);
 // RX.
 StatusCode spi_exchange(SpiPort spi, uint8_t *tx_data, size_t tx_len, uint8_t *rx_data,
                         size_t rx_len);
+
+#ifdef x86
+// Reads data from the tx buffer into data
+StatusCode spi_get_tx(uint8_t *data, uint8_t len);
+
+// Writes from data into the rx buffer
+StatusCode spi_set_rx(uint8_t *data, uint8_t len);
+#endif

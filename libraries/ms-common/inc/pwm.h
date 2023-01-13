@@ -6,9 +6,9 @@
 // - Module must be initialized for the timer you want before use.
 // - Use pwm_set_dc unless you have reason not to.
 // - pwm_set_pulse affords resolution < 1% unlike pwm_set_dc.
-// - For stm32f0xx GPIO pins must use the correct GPIO_ALTFN to utilize the PWM
+// - For stm32f10x GPIO pins must use the correct GPIO_ALTFN to utilize the PWM
 // (See Datasheet).
-// - On stm32f0xx all PWM channels for a timer are automatically connected.
+// - On stm32f10x all PWM channels for a timer are automatically connected.
 
 #include <stdint.h>
 
@@ -31,3 +31,6 @@ StatusCode pwm_set_pulse(PwmTimer timer, uint16_t pulse_width_us);
 // pwm_set_pulse doing the necessary math to convert from 0-100% to the fraction
 // of the period.
 StatusCode pwm_set_dc(PwmTimer timer, uint16_t dc);
+
+// Gets the duty cycle of the PWM timer.
+uint16_t pwm_get_dc(PwmTimer timer);
