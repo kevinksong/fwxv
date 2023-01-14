@@ -23,7 +23,7 @@ static void prv_power_supply_inactive_input(Fsm *fsm, void *context) {
   if (state == GPIO_STATE_LOW) {
     fsm_transition(fsm, POWER_SUPPLY_ACTIVE);
   }
-  LOG_DEBUG("power_supply: valid=%d", state == GPIO_STATE_HIGH);
+  LOG_DEBUG("power_supply: valid=%d\n", state == GPIO_STATE_HIGH);
 }
 
 static void prv_power_supply_inactive_output(void *context) {
@@ -52,7 +52,7 @@ static void prv_power_supply_active_input(Fsm *fsm, void *context) {
     LOG_WARN("power_supply: overcurrent");
     set_power_select_status_fault(PWR_SUP_FAULT | POWER_SELECT_PWR_SUP_FAULT_OC_MASK);
   }
-  LOG_DEBUG("power_supply: valid=%d, voltage=%d, current=%d", state == GPIO_STATE_HIGH,
+  LOG_DEBUG("power_supply: valid=%d, voltage=%d, current=%d\n", state == GPIO_STATE_HIGH,
             adc_reading_voltage, adc_reading_current);
 }
 
@@ -74,7 +74,7 @@ static FsmTransition s_power_supply_transition_list[NUM_POWER_SUPPLY_STATES] = {
 StatusCode init_power_supply(void) {
   // init valid pin
   status_ok_or_return(
-      gpio_init_pin(&g_power_select_valid_pin, GPIO_OUTPUT_PUSH_PULL, GPIO_STATE_LOW));
+      gpio_init_pin(&g_power_select_valid_pin, GPIO_INPUT_PULL_UP, GPIO_STATE_LOW));
   status_ok_or_return(gpio_init_pin(&g_power_select_voltage_pin, GPIO_ANALOG, GPIO_STATE_LOW));
   status_ok_or_return(adc_add_channel(g_power_select_voltage_pin));
   status_ok_or_return(gpio_init_pin(&g_power_select_current_pin, GPIO_ANALOG, GPIO_STATE_LOW));
@@ -90,12 +90,4 @@ StatusCode init_power_supply(void) {
   return STATUS_CODE_OK;
 }
 
-
-#ifdef MS_TEST
-
-uint16_t get_adc_reading_voltage() 
-{
-    return adc_reading_voltage;
-}
-
-#endif
+#include "getter_template.c"
